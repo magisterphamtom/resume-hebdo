@@ -1,0 +1,26 @@
+{
+  "RESUME_HEBDO": {
+    "Titre": "Résumé de la semaine",
+    "Bouton": "Résumé de la semaine",
+    "Partager": "Montrer à tous",
+    "PartageOk": "Résumé envoyé aux joueurs connectés.",
+    "PartageErreur": "Impossible d'envoyer le résumé aux joueurs (voir la console F12).",
+    "AucunResume": "Aucun résumé n'est disponible pour le moment.",
+    "OuvertureErreur": "Impossible d'ouvrir le résumé (voir la console F12).",
+    "Reglage": {
+      "Image": {
+        "Nom": "Image du résumé (facultatif)",
+        "Aide": "Par défaut, le module lit worlds/<monde>/resume/dernier-resume.webp (ou .png, .jpg) et détecte tout seul quand ce fichier est remplacé. Ne renseignez ce champ que pour utiliser un autre fichier."
+      },
+      "Auto": {
+        "Nom": "Ouvrir le résumé à la connexion",
+        "Aide": "Affiche automatiquement le résumé quand il n'a pas encore été vu. Réglage propre à chaque utilisateur."
+      }
+    },
+    "ZoomPlus": "Zoom avant",
+    "ZoomMoins": "Zoom arrière",
+    "Ajuster": "Ajuster à la fenêtre",
+    "Aide": "Molette : zoom · Glisser : déplacer · Double-clic : ajuster",
+    "Nouveau": "Nouveau"
+  }
+}

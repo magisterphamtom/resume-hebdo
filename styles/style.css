@@ -1,0 +1,126 @@
+.resume-hebdo .window-content {
+  padding: 0;
+  overflow: hidden;
+}
+
+.resume-hebdo .rh-root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.resume-hebdo .rh-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.5rem;
+  flex: 0 0 auto;
+}
+
+.resume-hebdo .rh-toolbar button {
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 2rem;
+  padding: 0 0.6rem;
+}
+
+.resume-hebdo .rh-hint {
+  flex: 1 1 auto;
+  font-size: var(--font-size-12, 0.75rem);
+  opacity: 0.7;
+  text-align: center;
+}
+
+/* Corps : onglets à gauche, image à droite. */
+.resume-hebdo .rh-body {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.resume-hebdo .rh-tabs {
+  display: flex;
+  flex: 0 0 9rem;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.3rem;
+  overflow-y: auto;
+  background: #14152b;
+  border-right: 1px solid #c9a227;
+}
+
+.resume-hebdo .rh-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.1rem;
+  width: 100%;
+  height: auto;
+  padding: 0.35rem 0.5rem;
+  line-height: 1.2;
+  text-align: left;
+  color: #e9e4d6;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.resume-hebdo .rh-tab:hover {
+  border-color: #c9a227;
+}
+
+.resume-hebdo .rh-tab.active {
+  background: #2a2548;
+  border-color: #c9a227;
+}
+
+.resume-hebdo .rh-tab-num {
+  font-weight: bold;
+  color: #c9a227;
+}
+
+.resume-hebdo .rh-tab-title {
+  font-size: var(--font-size-12, 0.75rem);
+  white-space: normal;
+}
+
+.resume-hebdo .rh-new {
+  font-size: var(--font-size-11, 0.7rem);
+  color: #6fd0b0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Zone d'affichage : l'image est positionnée et zoomée par le script. */
+.resume-hebdo .rh-scroll {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  background: #0c0d1e;
+  cursor: grab;
+  touch-action: none;
+}
+
+.resume-hebdo .rh-scroll.rh-dragging {
+  cursor: grabbing;
+}
+
+.resume-hebdo .rh-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: none;
+  max-height: none;
+  transform-origin: 0 0;
+  border: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.resume-hebdo .rh-none {
+  position: relative;
+  color: #e9e4d6;
+  padding: 2rem;
+  text-align: center;
+}

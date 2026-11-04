@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Mettre à jour module.json
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          REPO="${GITHUB_REPOSITORY}"
+          jq --arg v "$VERSION" \
+             --arg dl "https://github.com/${REPO}/releases/download/${GITHUB_REF_NAME}/module.zip" \
+             '.version = $v | .download = $dl' module.json > module.tmp
+          mv module.tmp module.json
+
+      - name: Créer l'archive
+        run: zip -r module.zip module.json scripts styles lang templates README.md LICENSE
+
+      - name: Joindre les fichiers à la release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            module.json
+            module.zip
