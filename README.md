@@ -1,3 +1,5 @@
+![Résumé hebdomadaire](.github/banner.png)
+
 # Résumé hebdomadaire
 
 Module Foundry VTT (v13/v14) qui affiche aux joueurs l'image du résumé de la dernière séance.
