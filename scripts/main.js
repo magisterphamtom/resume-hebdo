@@ -285,7 +285,7 @@ class ResumeViewer extends HandlebarsApplicationMixin(ApplicationV2) {
     };
     viewport.addEventListener("pointerup", endDrag);
     viewport.addEventListener("pointercancel", endDrag);
-    // Un clic (sans glisser) ouvre le résumé en grand ; deux clics rapprochés ajustent à la fenêtre.
+    // Un clic (sans glisser) tourne la page s'il y a un verso ; deux clics rapprochés ajustent à la fenêtre.
     viewport.addEventListener("click", (event) => {
       if (event.target.closest(".rh-coin")) return;
       if (moved || event.button !== 0) return;
@@ -297,7 +297,7 @@ class ResumeViewer extends HandlebarsApplicationMixin(ApplicationV2) {
       }
       clickTimer = setTimeout(() => {
         clickTimer = null;
-        ResumeViewer.#onFullscreen.call(this);
+        if (this.entries[this.entryIndex]?.verso) ResumeViewer.#onFlip.call(this);
       }, 250);
     });
 
