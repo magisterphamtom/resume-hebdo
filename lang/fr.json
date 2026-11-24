@@ -27,12 +27,15 @@
     "ZoomPlus": "Zoom avant",
     "ZoomMoins": "Zoom arrière",
     "Ajuster": "Ajuster à la fenêtre",
-    "Aide": "Molette : zoom · Glisser : déplacer · Double-clic : ajuster",
+    "Aide": "Clic : voir en grand · Molette : zoom · Glisser : déplacer · Double-clic : ajuster",
     "Nouveau": "Nouveau",
     "Retourner": "Tourner la page",
     "Recto": "Recto",
     "Page": "Page {n} / 2",
     "Seance": "Séance {n}",
-    "AideRetourner": "Ce résumé tient sur deux pages : clic sur l'image ou sur ce bouton pour tourner la page"
+    "AideRetourner": "Ce résumé tient sur deux pages : ce bouton (ou le coin corné) tourne la page",
+    "Grand": "Voir en grand",
+    "Fermer": "Fermer",
+    "AideGrand": "Molette : zoom · Glisser : déplacer · Double-clic : revenir · Échap : fermer"
   }
 }

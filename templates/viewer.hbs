@@ -3,6 +3,7 @@
     <button type="button" data-action="zoomOut" data-tooltip="{{labels.zoomOut}}" aria-label="{{labels.zoomOut}}"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
     <button type="button" data-action="zoomIn" data-tooltip="{{labels.zoomIn}}" aria-label="{{labels.zoomIn}}"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
     <button type="button" data-action="fit" data-tooltip="{{labels.fit}}" aria-label="{{labels.fit}}"><i class="fa-solid fa-expand"></i></button>
+    <button type="button" data-action="fullscreen" data-tooltip="{{labels.fullscreen}}" aria-label="{{labels.fullscreen}}"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></button>
     <button type="button" class="rh-flip" data-action="flip" data-tooltip="{{labels.flipHint}}" {{#unless hasVerso}}hidden{{/unless}}><i class="fa-solid fa-book-open"></i> {{labels.flip}}</button>
     <span class="rh-page" {{#unless hasVerso}}hidden{{/unless}}>Page 1 / 2</span>
     <span class="rh-hint">{{labels.hint}}</span>
@@ -31,7 +32,7 @@
         <p class="rh-none">{{labels.none}}</p>
         {{/if}}
       </div>
-      <span class="rh-coin" {{#unless hasVerso}}hidden{{/unless}} aria-hidden="true"></span>
+      <button type="button" class="rh-coin" data-action="flip" data-tooltip="{{labels.flip}}" aria-label="{{labels.flip}}" {{#unless hasVerso}}hidden{{/unless}}></button>
     </div>
   </div>
 </div>

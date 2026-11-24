@@ -152,7 +152,11 @@
   bottom: 0;
   width: 38px;
   height: 38px;
-  pointer-events: none;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
   background: linear-gradient(135deg, transparent 50%, rgba(0, 0, 0, .35) 50%, #e8d9b2 56%, #cdb27a 100%);
   box-shadow: -2px -2px 6px rgba(0, 0, 0, .35);
   border-top-left-radius: 4px;
@@ -281,3 +285,71 @@
 .resume-hebdo.rh-fantasy .rh-none { color: var(--rh-encre); font-family: "RH Garamond", serif; font-style: italic; font-size: 1.1rem; }
 .resume-hebdo.rh-fantasy .rh-coin { right: 8px; bottom: 8px; }
 @media (prefers-reduced-motion: reduce) { .resume-hebdo .rh-tab { transition: none; } }
+
+.resume-hebdo .rh-coin:hover { width: 48px; height: 48px; }
+
+/* ===================================================================
+   Résumé en grand, par-dessus tout l'écran
+   =================================================================== */
+.rh-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  background: rgba(8, 8, 14, .92);
+  animation: rh-lb-in .18s ease-out;
+}
+@keyframes rh-lb-in { from { opacity: 0; } to { opacity: 1; } }
+.rh-lightbox .rh-lb-scene {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 16px 2vw 0;
+  backface-visibility: hidden;
+}
+.rh-lightbox .rh-lb-img {
+  max-width: 96vw;
+  max-height: calc(100vh - 100px);
+  border: 0;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .8);
+  cursor: grab;
+  user-select: none;
+  transform-origin: center;
+  touch-action: none;
+}
+.rh-lightbox .rh-lb-bar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 10px 16px 14px;
+  color: #e9e4d6;
+}
+.rh-lightbox .rh-lb-hint { font-size: .85rem; opacity: .75; }
+.rh-lightbox .rh-lb-page { font-size: .9rem; opacity: .9; }
+.rh-lightbox button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: auto;
+  height: 34px;
+  padding: 0 14px;
+  border: 1px solid #c9a227;
+  border-radius: 4px;
+  background: #1d1a2e;
+  color: #f3e6c0;
+  cursor: pointer;
+}
+.rh-lightbox .rh-lb-close { position: absolute; top: 14px; right: 16px; width: 40px; height: 40px; padding: 0; justify-content: center; font-size: 1.2rem; border-radius: 50%; }
+.rh-lightbox.rh-fantasy { background: radial-gradient(ellipse at 50% 40%, rgba(40, 14, 26, .9), rgba(8, 4, 8, .96)); font-family: "RH Garamond", Georgia, serif; }
+.rh-lightbox.rh-fantasy .rh-lb-img { box-shadow: 0 0 0 3px #8a6a1c, 0 0 0 7px #24101a, 0 0 0 8px #d4af37, 0 20px 60px rgba(0, 0, 0, .8); }
+.rh-lightbox.rh-fantasy button { font-family: "RH Cinzel", serif; background: linear-gradient(180deg, #4b2234, #2e1520); border-color: #8a6a1c; color: #f3dfae; }
+.rh-lightbox.rh-fantasy .rh-lb-flip { background: linear-gradient(180deg, #8a6a1c, #5a4210); border-color: #d4af37; color: #fff6d8; }
+.rh-lightbox.rh-fantasy .rh-lb-hint { font-style: italic; color: #d9c79c; }
+.rh-lightbox.rh-fantasy .rh-lb-page { font-family: "RH Cinzel", serif; letter-spacing: .06em; color: #d9c79c; }
+@media (prefers-reduced-motion: reduce) { .rh-lightbox { animation: none; } }

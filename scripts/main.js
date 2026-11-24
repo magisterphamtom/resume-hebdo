@@ -124,7 +124,8 @@ class ResumeViewer extends HandlebarsApplicationMixin(ApplicationV2) {
       fit: ResumeViewer.#onFit,
       selectTab: ResumeViewer.#onSelectTab,
       share: ResumeViewer.#onShare,
-      flip: ResumeViewer.#onFlip
+      flip: ResumeViewer.#onFlip,
+      fullscreen: ResumeViewer.#onFullscreen
     }
   };
 
@@ -181,7 +182,8 @@ class ResumeViewer extends HandlebarsApplicationMixin(ApplicationV2) {
         new: game.i18n.localize("RESUME_HEBDO.Nouveau"),
         flip: game.i18n.localize("RESUME_HEBDO.Retourner"),
         recto: game.i18n.localize("RESUME_HEBDO.Recto"),
-        flipHint: game.i18n.localize("RESUME_HEBDO.AideRetourner")
+        flipHint: game.i18n.localize("RESUME_HEBDO.AideRetourner"),
+        fullscreen: game.i18n.localize("RESUME_HEBDO.Grand")
       }
     };
   }
@@ -263,7 +265,7 @@ class ResumeViewer extends HandlebarsApplicationMixin(ApplicationV2) {
     let moved = false;
     let clickTimer = null;
     viewport.addEventListener("pointerdown", (event) => {
-      if (event.button !== 0) return;
+      if (event.button !== 0 || event.target.closest(".rh-coin")) return;
       drag = { x: event.clientX, y: event.clientY, tx, ty };
       moved = false;
       viewport.setPointerCapture(event.pointerId);
@@ -283,8 +285,9 @@ class ResumeViewer extends HandlebarsApplicationMixin(ApplicationV2) {
     };
     viewport.addEventListener("pointerup", endDrag);
     viewport.addEventListener("pointercancel", endDrag);
-    // Un clic (sans glisser) tourne la page s'il y a un verso ; deux clics rapprochés ajustent à la fenêtre.
+    // Un clic (sans glisser) ouvre le résumé en grand ; deux clics rapprochés ajustent à la fenêtre.
     viewport.addEventListener("click", (event) => {
+      if (event.target.closest(".rh-coin")) return;
       if (moved || event.button !== 0) return;
       if (clickTimer) {
         clearTimeout(clickTimer);
@@ -294,7 +297,7 @@ class ResumeViewer extends HandlebarsApplicationMixin(ApplicationV2) {
       }
       clickTimer = setTimeout(() => {
         clickTimer = null;
-        if (this.entries[this.entryIndex]?.verso) ResumeViewer.#onFlip.call(this);
+        ResumeViewer.#onFullscreen.call(this);
       }, 250);
     });
 
@@ -383,6 +386,22 @@ class ResumeViewer extends HandlebarsApplicationMixin(ApplicationV2) {
     }
   }
 
+  /** Ouvre le résumé en grand, par-dessus tout l'écran (Échap, clic à côté ou bouton pour fermer). */
+  static #onFullscreen() {
+    const entry = this.entries[this.entryIndex];
+    if (!entry) return;
+    openLightbox(entry, this.page, skin() === "fantasy", (page) => {
+      if (page === this.page) return;
+      this.page = page;
+      const img = this.element?.querySelector(".rh-img");
+      if (img) {
+        img.addEventListener("load", () => this.zoomApi?.fit(), { once: true });
+        img.src = page ? entry.verso : entry.src;
+      }
+      this.#syncFlip();
+    });
+  }
+
   static #onShare() {
     try {
       game.socket.emit(SOCKET, { action: "show" });
@@ -392,6 +411,69 @@ class ResumeViewer extends HandlebarsApplicationMixin(ApplicationV2) {
       ui.notifications.error(game.i18n.localize("RESUME_HEBDO.PartageErreur"));
     }
   }
+}
+
+/**
+ * Résumé en grand sur tout l'écran : l'image tient dans l'écran, molette pour zoomer, glisser pour déplacer,
+ * double-clic pour revenir, « Tourner la page » s'il y a un verso. Échap, clic sur le fond ou ✕ pour fermer.
+ * @param {object} entry    Résumé (src, verso)
+ * @param {number} page     Face affichée au départ (0 recto, 1 verso)
+ * @param {boolean} fantasy Habillage fantasy
+ * @param {Function} onPage Appelée avec la face visible à la fermeture, pour garder la fenêtre en accord
+ */
+function openLightbox(entry, page, fantasy, onPage) {
+  document.querySelector(".rh-lightbox")?.remove();
+  const t = (k) => game.i18n.localize(`RESUME_HEBDO.${k}`);
+  const box = document.createElement("div");
+  box.className = `rh-lightbox${fantasy ? " rh-fantasy" : ""}`;
+  box.innerHTML = `<div class="rh-lb-scene"><img class="rh-lb-img" alt="" draggable="false"></div>
+    <div class="rh-lb-bar">
+      ${entry.verso ? `<button type="button" class="rh-lb-flip"><i class="fa-solid fa-book-open"></i> ${t("Retourner")}</button><span class="rh-lb-page"></span>` : ""}
+      <span class="rh-lb-hint">${t("AideGrand")}</span>
+      <button type="button" class="rh-lb-close" aria-label="${t("Fermer")}"><i class="fa-solid fa-xmark"></i></button>
+    </div>`;
+  document.body.append(box);
+  const scene = box.querySelector(".rh-lb-scene");
+  const img = box.querySelector(".rh-lb-img");
+  const label = box.querySelector(".rh-lb-page");
+  let scale = 1, tx = 0, ty = 0, drag = null, moved = false, busy = false;
+  const apply = () => { img.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`; };
+  const reset = () => { scale = 1; tx = 0; ty = 0; apply(); };
+  const show = () => { img.src = page ? entry.verso : entry.src; if (label) label.textContent = game.i18n.format("RESUME_HEBDO.Page", { n: page + 1 }); reset(); };
+  const close = () => { document.removeEventListener("keydown", onKey, true); box.remove(); onPage?.(page); };
+  const onKey = (event) => { if (event.key === "Escape") { event.stopPropagation(); event.preventDefault(); close(); } };
+  const flip = async () => {
+    if (busy || !entry.verso) return;
+    busy = true;
+    const turn = (deg) => `perspective(1800px) rotateY(${deg}deg)`;
+    try {
+      scene.style.transformOrigin = page ? "right center" : "left center";
+      await scene.animate([{ transform: turn(0), filter: "brightness(1)" }, { transform: turn(page ? 90 : -90), filter: "brightness(.5)" }], { duration: 320, easing: "ease-in", fill: "forwards" }).finished;
+      page = page ? 0 : 1;
+      await new Promise((resolve) => { img.addEventListener("load", resolve, { once: true }); img.addEventListener("error", resolve, { once: true }); show(); });
+      scene.getAnimations().forEach((a) => a.cancel());
+      scene.style.transformOrigin = page ? "right center" : "left center";
+      await scene.animate([{ transform: turn(page ? 90 : -90), filter: "brightness(.5)" }, { transform: turn(0), filter: "brightness(1)" }], { duration: 320, easing: "ease-out" }).finished;
+    } catch (err) { /* page interrompue */ } finally { busy = false; }
+  };
+  box.querySelector(".rh-lb-close").addEventListener("click", close);
+  box.querySelector(".rh-lb-flip")?.addEventListener("click", flip);
+  box.addEventListener("click", (event) => { if (event.target === box || event.target === scene) close(); });
+  scene.addEventListener("wheel", (event) => {
+    event.preventDefault();
+    const r = img.getBoundingClientRect();
+    const next = Math.min(4, Math.max(1, scale * (event.deltaY < 0 ? 1.2 : 1 / 1.2)));
+    const cx = event.clientX - (r.left + r.width / 2); const cy = event.clientY - (r.top + r.height / 2);
+    tx -= cx * (next / scale - 1); ty -= cy * (next / scale - 1); scale = next;
+    if (scale === 1) { tx = 0; ty = 0; }
+    apply();
+  }, { passive: false });
+  img.addEventListener("pointerdown", (event) => { if (event.button !== 0) return; drag = { x: event.clientX, y: event.clientY, tx, ty }; moved = false; img.setPointerCapture(event.pointerId); });
+  img.addEventListener("pointermove", (event) => { if (!drag) return; if (Math.abs(event.clientX - drag.x) + Math.abs(event.clientY - drag.y) > 4) moved = true; if (scale > 1) { tx = drag.tx + event.clientX - drag.x; ty = drag.ty + event.clientY - drag.y; apply(); } });
+  img.addEventListener("pointerup", () => { drag = null; });
+  img.addEventListener("dblclick", reset);
+  document.addEventListener("keydown", onKey, true);
+  show();
 }
 
 /**

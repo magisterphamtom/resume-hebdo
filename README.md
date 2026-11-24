@@ -10,7 +10,8 @@ Module Foundry VTT (v13/v14) qui affiche aux joueurs l'image du résumé de la d
 - **Bouton 📜 « Résumé de la semaine »** dans la barre d'outils de gauche : rouvre la fenêtre si elle a été fermée par inadvertance.
 - **Zoom à la molette** (centré sur le curseur), **déplacement en glissant**, **double-clic** pour ajuster à la fenêtre ; boutons + / − / ajuster. L'image tient toujours dans la fenêtre au départ, quelle que soit la taille d'écran, et la fenêtre est redimensionnable.
 - **Onglets par séance** (si `index.json` est présent) pour relire les résumés précédents.
-- **Résumé sur deux pages** : déposez `session-107-verso.webp` à côté de `session-107.webp` (ou indiquez `"verso"` dans `index.json`) ; un clic sur l'image ou le bouton « Tourner la page » la tourne comme une page de livre, et un coin corné signale la seconde page.
+- **Résumé sur deux pages** : déposez `session-107-verso.webp` à côté de `session-107.webp` (ou indiquez `"verso"` dans `index.json`) ; le bouton « Tourner la page » ou un clic sur le coin corné la tourne comme une page de livre.
+- **Voir en grand** : un clic sur l'image l'ouvre par-dessus tout l'écran (molette pour zoomer, Échap pour fermer).
 - **Habillage fantasy** (grimoire de cuir, parchemin, onglets en marque-pages, sceau « Nouveau ») ou **classique** ; par défaut, fantasy pour D&D 5e, Pathfinder et les autres jeux médiévaux-fantastiques.
 - **Bouton MJ « Montrer à tous »** : affiche le résumé immédiatement chez les joueurs déjà connectés.
 
