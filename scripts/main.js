@@ -471,7 +471,14 @@ function openLightbox(entry, page, fantasy, onPage) {
   img.addEventListener("pointerdown", (event) => { if (event.button !== 0) return; drag = { x: event.clientX, y: event.clientY, tx, ty }; moved = false; img.setPointerCapture(event.pointerId); });
   img.addEventListener("pointermove", (event) => { if (!drag) return; if (Math.abs(event.clientX - drag.x) + Math.abs(event.clientY - drag.y) > 4) moved = true; if (scale > 1) { tx = drag.tx + event.clientX - drag.x; ty = drag.ty + event.clientY - drag.y; apply(); } });
   img.addEventListener("pointerup", () => { drag = null; });
-  img.addEventListener("dblclick", reset);
+  // Un clic (sans glisser) tourne la page s'il y a un verso ; un double-clic revient à la taille de l'écran.
+  let clickTimer = null;
+  img.addEventListener("click", (event) => {
+    event.stopPropagation();
+    if (moved || event.button !== 0) return;
+    if (clickTimer) { clearTimeout(clickTimer); clickTimer = null; reset(); return; }
+    clickTimer = setTimeout(() => { clickTimer = null; flip(); }, 250);
+  });
   document.addEventListener("keydown", onKey, true);
   show();
 }

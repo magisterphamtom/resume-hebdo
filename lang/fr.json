@@ -36,6 +36,6 @@
     "AideRetourner": "Ce résumé tient sur deux pages : ce bouton, le coin corné ou un clic sur l'image tourne la page",
     "Grand": "Voir en grand",
     "Fermer": "Fermer",
-    "AideGrand": "Molette : zoom · Glisser : déplacer · Double-clic : revenir · Échap : fermer"
+    "AideGrand": "Clic : tourner la page · Molette : zoom · Glisser : déplacer · Double-clic : revenir · Échap : fermer"
   }
 }
