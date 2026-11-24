@@ -3,6 +3,8 @@
     <button type="button" data-action="zoomOut" data-tooltip="{{labels.zoomOut}}" aria-label="{{labels.zoomOut}}"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
     <button type="button" data-action="zoomIn" data-tooltip="{{labels.zoomIn}}" aria-label="{{labels.zoomIn}}"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
     <button type="button" data-action="fit" data-tooltip="{{labels.fit}}" aria-label="{{labels.fit}}"><i class="fa-solid fa-expand"></i></button>
+    <button type="button" class="rh-flip" data-action="flip" data-tooltip="{{labels.flipHint}}" {{#unless hasVerso}}hidden{{/unless}}><i class="fa-solid fa-book-open"></i> {{labels.flip}}</button>
+    <span class="rh-page" {{#unless hasVerso}}hidden{{/unless}}>Page 1 / 2</span>
     <span class="rh-hint">{{labels.hint}}</span>
     {{#if isGM}}
     <button type="button" class="rh-share" data-action="share"><i class="fa-solid fa-paper-plane"></i> {{labels.share}}</button>
@@ -16,16 +18,20 @@
         <span class="rh-tab-num">{{label}}</span>
         {{#if titre}}<span class="rh-tab-title">{{titre}}</span>{{/if}}
         {{#if isNew}}<span class="rh-new">{{../labels.new}}</span>{{/if}}
+        {{#if verso}}<span class="rh-tab-pages"><i class="fa-solid fa-copy"></i> 2</span>{{/if}}
       </button>
       {{/each}}
     </nav>
     {{/if}}
     <div class="rh-scroll">
-      {{#if src}}
-      <img class="rh-img" src="{{src}}" alt="Résumé hebdomadaire" draggable="false">
-      {{else}}
-      <p class="rh-none">{{labels.none}}</p>
-      {{/if}}
+      <div class="rh-sheet">
+        {{#if src}}
+        <img class="rh-img" src="{{src}}" alt="Résumé hebdomadaire" draggable="false">
+        {{else}}
+        <p class="rh-none">{{labels.none}}</p>
+        {{/if}}
+      </div>
+      <span class="rh-coin" {{#unless hasVerso}}hidden{{/unless}} aria-hidden="true"></span>
     </div>
   </div>
 </div>

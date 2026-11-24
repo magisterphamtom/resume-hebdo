@@ -23,3 +23,9 @@
 ## À faire / idées
 - Galerie des résumés précédents (écartée pour la v1).
 - Séparation par monde : le réglage `imagePath` est déjà propre à chaque monde.
+
+## v1.4.0 (24/11/2026)
+- **Recto / verso** (demande de Stéphane) : un résumé peut avoir une seconde page. Clé `verso` facultative dans `index.json`, sinon le module cherche tout seul `<nom>-verso.<ext>` à côté du recto (aussi pour `dernier-resume`). Clic sur l'image (sans glisser) ou bouton « Tourner la page » : la feuille pivote sur sa tranche avec assombrissement, l'image change, la page revient ; double-clic = ajuster. Indicateur « Page 1 / 2 », coin corné, repère « 2 pages » sur l'onglet.
+- **Habillage fantasy** : réglage monde « Habillage de la fenêtre » (Automatique / Fantasy / Classique ; automatique = fantasy pour dnd5e, pf2e, pf1, a5e, black-flag, dragonbane, forbidden-lands, tormenta20). Barre de titre de cuir et titre doré (Cinzel Decorative), boutons de laiton, onglets en marque-pages (« Séance 107 », titre en italique), sceau de cire « Nouveau », lecture sur parchemin à double filet d'or. Polices Cinzel, Cinzel Decorative, EB Garamond (OFL) ajoutées, incluses dans le zip.
+- Zoom calculé sur la feuille (en retrait du cadre dans l'habillage fantasy).
+- Vérifié : syntaxe ; aperçu statique de l'habillage. À tester dans Foundry : retournement, zoom après retournement, onglets avec et sans verso, réglage d'habillage.

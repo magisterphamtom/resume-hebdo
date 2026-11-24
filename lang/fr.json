@@ -15,12 +15,24 @@
       "Auto": {
         "Nom": "Ouvrir le résumé à la connexion",
         "Aide": "Affiche automatiquement le résumé quand il n'a pas encore été vu. Réglage propre à chaque utilisateur."
+      },
+      "Habillage": {
+        "Nom": "Habillage de la fenêtre",
+        "Aide": "Fantasy : grimoire de cuir et parchemin, onglets en marque-pages. Classique : sobre. Automatique : fantasy pour D&D 5e, Pathfinder et les autres jeux médiévaux-fantastiques.",
+        "Auto": "Automatique (selon le système)",
+        "Fantasy": "Fantasy (grimoire)",
+        "Classique": "Classique"
       }
     },
     "ZoomPlus": "Zoom avant",
     "ZoomMoins": "Zoom arrière",
     "Ajuster": "Ajuster à la fenêtre",
     "Aide": "Molette : zoom · Glisser : déplacer · Double-clic : ajuster",
-    "Nouveau": "Nouveau"
+    "Nouveau": "Nouveau",
+    "Retourner": "Tourner la page",
+    "Recto": "Recto",
+    "Page": "Page {n} / 2",
+    "Seance": "Séance {n}",
+    "AideRetourner": "Ce résumé tient sur deux pages : clic sur l'image ou sur ce bouton pour tourner la page"
   }
 }

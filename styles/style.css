@@ -124,3 +124,160 @@
   padding: 2rem;
   text-align: center;
 }
+
+/* ===================================================================
+   Recto / verso : la feuille tourne comme une page
+   =================================================================== */
+.resume-hebdo .rh-sheet {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+.resume-hebdo .rh-turning { cursor: progress; }
+.resume-hebdo .rh-toolbar .rh-flip[hidden], .resume-hebdo .rh-page[hidden], .resume-hebdo .rh-coin[hidden] { display: none; }
+.resume-hebdo .rh-page {
+  flex: 0 0 auto;
+  font-size: var(--font-size-12, 0.75rem);
+  opacity: 0.85;
+}
+.resume-hebdo .rh-tab-pages {
+  font-size: var(--font-size-11, 0.7rem);
+  opacity: 0.75;
+}
+/* Coin de page corné en bas à droite : il y a une seconde page */
+.resume-hebdo .rh-coin {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 38px;
+  height: 38px;
+  pointer-events: none;
+  background: linear-gradient(135deg, transparent 50%, rgba(0, 0, 0, .35) 50%, #e8d9b2 56%, #cdb27a 100%);
+  box-shadow: -2px -2px 6px rgba(0, 0, 0, .35);
+  border-top-left-radius: 4px;
+  z-index: 2;
+}
+
+/* ===================================================================
+   Habillage fantasy : grimoire de cuir, parchemin et marque-pages
+   Polices SIL OFL 1.1 (fonts/OFL-*.txt)
+   =================================================================== */
+@font-face { font-family: "RH Cinzel"; src: url("../fonts/cinzel-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "RH Cinzel"; src: url("../fonts/cinzel-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "RH Cinzel Decorative"; src: url("../fonts/cinzel-decorative-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "RH Garamond"; src: url("../fonts/eb-garamond-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "RH Garamond"; src: url("../fonts/eb-garamond-latin-400-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "RH Garamond"; src: url("../fonts/eb-garamond-latin-600-normal.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+
+.resume-hebdo.rh-fantasy {
+  --rh-cuir: #3b1d2a;
+  --rh-cuir-2: #24101a;
+  --rh-or: #d4af37;
+  --rh-or-sombre: #8a6a1c;
+  --rh-velin: #f1e4c2;
+  --rh-encre: #2a1d12;
+  border: 0;
+  border-radius: 10px;
+  background: var(--rh-cuir-2);
+  box-shadow: 0 0 0 2px var(--rh-or-sombre), 0 0 0 5px var(--rh-cuir-2), 0 0 0 6px var(--rh-or), 0 18px 40px rgba(0, 0, 0, .7);
+  font-family: "RH Garamond", Georgia, serif;
+}
+/* Barre de titre : bandeau de cuir et titre gravé à l'or */
+.resume-hebdo.rh-fantasy .window-header {
+  background: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, .10), transparent 60%), linear-gradient(180deg, #4b2234, var(--rh-cuir));
+  border-bottom: 2px solid var(--rh-or);
+  color: #f6e7c0;
+}
+.resume-hebdo.rh-fantasy .window-header .window-title {
+  font-family: "RH Cinzel Decorative", "RH Cinzel", serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: .04em;
+  color: var(--rh-or);
+  text-shadow: 0 1px 0 #000;
+}
+.resume-hebdo.rh-fantasy .window-header .window-icon, .resume-hebdo.rh-fantasy .window-header button { color: var(--rh-or); }
+.resume-hebdo.rh-fantasy .window-content { background: var(--rh-cuir-2); }
+
+/* Barre d'outils : réglette dorée */
+.resume-hebdo.rh-fantasy .rh-toolbar {
+  background: linear-gradient(180deg, #2e1520, #1d0b13);
+  border-bottom: 1px solid var(--rh-or-sombre);
+  color: #eadfc4;
+}
+.resume-hebdo.rh-fantasy .rh-toolbar button {
+  height: 30px;
+  min-height: 0;
+  background: linear-gradient(180deg, #4b2234, #2e1520);
+  border: 1px solid var(--rh-or-sombre);
+  border-radius: 4px;
+  color: #f3dfae;
+  font-family: "RH Cinzel", serif;
+  font-size: .82rem;
+  box-shadow: none;
+}
+.resume-hebdo.rh-fantasy .rh-toolbar button:hover { border-color: var(--rh-or); color: #fff3cf; box-shadow: 0 0 8px rgba(212, 175, 55, .45); }
+.resume-hebdo.rh-fantasy .rh-toolbar .rh-flip { background: linear-gradient(180deg, #8a6a1c, #5a4210); color: #fff6d8; border-color: var(--rh-or); }
+.resume-hebdo.rh-fantasy .rh-hint, .resume-hebdo.rh-fantasy .rh-page { font-style: italic; color: #d9c79c; opacity: 1; }
+.resume-hebdo.rh-fantasy .rh-page { font-family: "RH Cinzel", serif; font-style: normal; letter-spacing: .06em; }
+
+/* Onglets : marque-pages de cuir avec ruban d'or */
+.resume-hebdo.rh-fantasy .rh-tabs {
+  flex-basis: 11rem;
+  gap: .4rem;
+  padding: .5rem .4rem .5rem .5rem;
+  background: radial-gradient(ellipse at 30% 0%, rgba(255, 255, 255, .06), transparent 50%), linear-gradient(90deg, #1d0b13, #2b1320);
+  border-right: 2px solid var(--rh-or-sombre);
+}
+.resume-hebdo.rh-fantasy .rh-tab {
+  position: relative;
+  padding: .45rem .6rem .45rem .8rem;
+  border: 1px solid rgba(212, 175, 55, .35);
+  border-radius: 2px 10px 10px 2px;
+  background: linear-gradient(90deg, rgba(0, 0, 0, .25), transparent 30%), #3b1d2a;
+  color: #eadfc4;
+  font-family: "RH Garamond", serif;
+}
+.resume-hebdo.rh-fantasy .rh-tab::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--rh-or-sombre);
+  border-radius: 2px 0 0 2px;
+}
+.resume-hebdo.rh-fantasy .rh-tab:hover { border-color: var(--rh-or); transform: translateX(3px); }
+.resume-hebdo.rh-fantasy .rh-tab.active { background: linear-gradient(90deg, rgba(0, 0, 0, .2), transparent 30%), #5a1730; border-color: var(--rh-or); box-shadow: 0 0 10px rgba(212, 175, 55, .3); }
+.resume-hebdo.rh-fantasy .rh-tab.active::before { background: var(--rh-or); }
+.resume-hebdo.rh-fantasy .rh-tab-num { font-family: "RH Cinzel", serif; font-weight: 700; letter-spacing: .04em; color: var(--rh-or); }
+.resume-hebdo.rh-fantasy .rh-tab-title { font-size: .85rem; font-style: italic; color: #e6d6b2; }
+.resume-hebdo.rh-fantasy .rh-tab-pages { color: #d9c79c; }
+/* « Nouveau » : un sceau de cire */
+.resume-hebdo.rh-fantasy .rh-new {
+  position: absolute;
+  right: -4px;
+  top: -6px;
+  padding: 2px 7px;
+  border-radius: 10px;
+  background: radial-gradient(circle at 35% 35%, #d04a3a, #7a1414 70%);
+  box-shadow: 0 0 0 2px #5a0e0e, 0 2px 4px rgba(0, 0, 0, .5);
+  color: #f6d9a8;
+  font-family: "RH Cinzel", serif;
+  font-size: .62rem;
+  letter-spacing: .08em;
+}
+
+/* Zone de lecture : parchemin encadré d'un double filet d'or */
+.resume-hebdo.rh-fantasy .rh-scroll {
+  margin: .6rem;
+  border-radius: 4px;
+  background: radial-gradient(ellipse at 50% 40%, #f6ecd2, #e6d3a8 75%, #cdb27a);
+  box-shadow: inset 0 0 0 2px var(--rh-or-sombre), inset 0 0 0 6px #e6d3a8, inset 0 0 0 7px var(--rh-or-sombre), inset 0 0 40px rgba(80, 50, 20, .45);
+}
+.resume-hebdo.rh-fantasy .rh-sheet { inset: 8px; overflow: hidden; }
+.resume-hebdo.rh-fantasy .rh-none { color: var(--rh-encre); font-family: "RH Garamond", serif; font-style: italic; font-size: 1.1rem; }
+.resume-hebdo.rh-fantasy .rh-coin { right: 8px; bottom: 8px; }
+@media (prefers-reduced-motion: reduce) { .resume-hebdo .rh-tab { transition: none; } }
