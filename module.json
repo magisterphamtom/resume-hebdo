@@ -1,8 +1,8 @@
 {
   "id": "resume-hebdo",
   "title": "Résumé hebdomadaire",
-  "description": "Affiche aux joueurs, dès leur connexion, l'image du résumé hebdomadaire de la dernière séance, avec des onglets pour les séances précédentes. Un résumé peut tenir sur deux pages : on tourne la page d'un clic. Habillage fantasy (grimoire) ou classique. Un bouton permet de rouvrir le résumé à tout moment.",
-  "version": "1.4.0",
+  "description": "Affiche aux joueurs, l'image du résumé hebdomadaire de la dernière séance, avec des onglets pour les séances précédentes. Un résumé peut tenir sur deux pages : on tourne la page d'un clic. Habillage fantasy (grimoire) ou classique. Un bouton permet de rouvrir le résumé à tout moment.",
+  "version": "1.5.0",
   "authors": [
     {
       "name": "magisterphamtom"
@@ -28,7 +28,7 @@
   "socket": true,
   "url": "https://github.com/magisterphamtom/resume-hebdo",
   "manifest": "https://github.com/magisterphamtom/resume-hebdo/releases/latest/download/module.json",
-  "download": "https://github.com/magisterphamtom/resume-hebdo/releases/download/v1.4.0/module.zip",
+  "download": "https://github.com/magisterphamtom/resume-hebdo/releases/download/v1.5.0/module.zip",
   "bugs": "https://github.com/magisterphamtom/resume-hebdo/issues",
   "readme": "https://github.com/magisterphamtom/resume-hebdo/blob/main/README.md",
   "license": "https://github.com/magisterphamtom/resume-hebdo/blob/main/LICENSE"

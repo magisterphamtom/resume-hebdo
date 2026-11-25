@@ -4,8 +4,7 @@
     <button type="button" data-action="zoomIn" data-tooltip="{{labels.zoomIn}}" aria-label="{{labels.zoomIn}}"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
     <button type="button" data-action="fit" data-tooltip="{{labels.fit}}" aria-label="{{labels.fit}}"><i class="fa-solid fa-expand"></i></button>
     <button type="button" data-action="fullscreen" data-tooltip="{{labels.fullscreen}}" aria-label="{{labels.fullscreen}}"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></button>
-    <button type="button" class="rh-flip" data-action="flip" data-tooltip="{{labels.flipHint}}" {{#unless hasVerso}}hidden{{/unless}}><i class="fa-solid fa-book-open"></i> {{labels.flip}}</button>
-    <span class="rh-page" {{#unless hasVerso}}hidden{{/unless}}>Page 1 / 2</span>
+    <button type="button" class="rh-flip" data-action="flip" {{#unless hasVerso}}hidden{{/unless}} data-tooltip="{{labels.flip}}" aria-label="{{labels.flip}}"><i class="fa-solid fa-rotate"></i> <span class="rh-flip-label">{{labels.recto}}</span></button>
     <span class="rh-hint">{{labels.hint}}</span>
     {{#if isGM}}
     <button type="button" class="rh-share" data-action="share"><i class="fa-solid fa-paper-plane"></i> {{labels.share}}</button>
@@ -32,7 +31,6 @@
         <p class="rh-none">{{labels.none}}</p>
         {{/if}}
       </div>
-      <button type="button" class="rh-coin" data-action="flip" data-tooltip="{{labels.flip}}" aria-label="{{labels.flip}}" {{#unless hasVerso}}hidden{{/unless}}></button>
     </div>
   </div>
 </div>

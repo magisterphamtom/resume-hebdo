@@ -182,7 +182,6 @@ class ResumeViewer extends HandlebarsApplicationMixin(ApplicationV2) {
         new: game.i18n.localize("RESUME_HEBDO.Nouveau"),
         flip: game.i18n.localize("RESUME_HEBDO.Retourner"),
         recto: game.i18n.localize("RESUME_HEBDO.Recto"),
-        flipHint: game.i18n.localize("RESUME_HEBDO.AideRetourner"),
         fullscreen: game.i18n.localize("RESUME_HEBDO.Grand")
       }
     };
@@ -265,7 +264,7 @@ class ResumeViewer extends HandlebarsApplicationMixin(ApplicationV2) {
     let moved = false;
     let clickTimer = null;
     viewport.addEventListener("pointerdown", (event) => {
-      if (event.button !== 0 || event.target.closest(".rh-coin")) return;
+      if (event.button !== 0) return;
       drag = { x: event.clientX, y: event.clientY, tx, ty };
       moved = false;
       viewport.setPointerCapture(event.pointerId);
@@ -285,9 +284,8 @@ class ResumeViewer extends HandlebarsApplicationMixin(ApplicationV2) {
     };
     viewport.addEventListener("pointerup", endDrag);
     viewport.addEventListener("pointercancel", endDrag);
-    // Un clic (sans glisser) tourne la page s'il y a un verso ; deux clics rapprochés ajustent à la fenêtre.
+    // Un clic (sans glisser) retourne la feuille s'il y a un verso ; deux clics rapprochés ajustent à la fenêtre.
     viewport.addEventListener("click", (event) => {
-      if (event.target.closest(".rh-coin")) return;
       if (moved || event.button !== 0) return;
       if (clickTimer) {
         clearTimeout(clickTimer);
@@ -344,43 +342,38 @@ class ResumeViewer extends HandlebarsApplicationMixin(ApplicationV2) {
     img.src = entry.src;
   }
 
-  /** Montre le bouton « Tourner la page » et l'indicateur recto / verso seulement si la séance a deux pages. */
+  /** Affiche ou cache le bouton « Retourner » selon que la séance a un verso, avec la face visible (Recto / Verso). */
   #syncFlip() {
-    const hasVerso = !!this.entries[this.entryIndex]?.verso;
-    this.element.querySelectorAll(".rh-flip, .rh-page, .rh-coin").forEach((el) => { el.hidden = !hasVerso; });
-    const page = this.element.querySelector(".rh-page");
-    if (page) page.textContent = game.i18n.format("RESUME_HEBDO.Page", { n: this.page + 1 });
+    const button = this.element.querySelector(".rh-flip");
+    if (!button) return;
+    button.hidden = !this.entries[this.entryIndex]?.verso;
+    const label = button.querySelector(".rh-flip-label");
+    if (label) label.textContent = game.i18n.localize(this.page ? "RESUME_HEBDO.Verso" : "RESUME_HEBDO.Recto");
   }
 
-  /** Tourne la page : la feuille pivote sur sa tranche, l'image change, puis la page revient, avec une ombre qui glisse. */
+  /** Retourne la feuille (comme coc7-resume-epoques) : la feuille pivote sur son axe, l'image change, puis la feuille revient. */
   static async #onFlip() {
     const entry = this.entries[this.entryIndex];
     const viewport = this.element.querySelector(".rh-scroll");
-    const sheet = viewport?.querySelector(".rh-sheet");
     const img = viewport?.querySelector(".rh-img");
-    if (this.flipping || !entry?.verso || !img || !sheet) return;
+    if (this.flipping || !entry?.verso || !img) return;
     this.flipping = true;
-    const forward = this.page === 0;
-    const turn = (deg) => `perspective(1600px) rotateY(${deg}deg)`;
-    const origin = forward ? "left center" : "right center";
-    sheet.style.transformOrigin = origin;
-    viewport.classList.add("rh-turning");
+    const turn = (deg) => `perspective(1400px) rotateY(${deg}deg)`;
     try {
-      await sheet.animate([{ transform: turn(0), filter: "brightness(1)" }, { transform: turn(forward ? -90 : 90), filter: "brightness(.55)" }], { duration: 320, easing: "ease-in", fill: "forwards" }).finished;
-      this.page = forward ? 1 : 0;
+      await viewport.animate([{ transform: turn(0) }, { transform: turn(90) }], { duration: 220, easing: "ease-in", fill: "forwards" }).finished;
+      this.page = this.page ? 0 : 1;
+      const src = this.page ? entry.verso : entry.src;
       await new Promise((resolve) => {
         img.addEventListener("load", resolve, { once: true });
         img.addEventListener("error", resolve, { once: true });
-        img.src = this.page ? entry.verso : entry.src;
+        img.src = src;
       });
       this.zoomApi?.fit();
-      sheet.getAnimations().forEach((animation) => animation.cancel());
-      sheet.style.transformOrigin = forward ? "right center" : "left center";
-      await sheet.animate([{ transform: turn(forward ? 90 : -90), filter: "brightness(.55)" }, { transform: turn(0), filter: "brightness(1)" }], { duration: 320, easing: "ease-out" }).finished;
+      viewport.getAnimations().forEach((animation) => animation.cancel());
+      await viewport.animate([{ transform: turn(-90) }, { transform: turn(0) }], { duration: 220, easing: "ease-out" }).finished;
     } catch (err) {
-      console.warn(`${MODULE_ID} | Page interrompue`, err);
+      console.warn(`${MODULE_ID} | Retournement interrompu`, err);
     } finally {
-      viewport.classList.remove("rh-turning");
       this.flipping = false;
       this.#syncFlip();
     }
@@ -391,7 +384,7 @@ class ResumeViewer extends HandlebarsApplicationMixin(ApplicationV2) {
     const entry = this.entries[this.entryIndex];
     if (!entry) return;
     openLightbox(entry, this.page, skin() === "fantasy", (page) => {
-      if (page === this.page) return;
+      if (page === this.page || this.flipping) return;
       this.page = page;
       const img = this.element?.querySelector(".rh-img");
       if (img) {
@@ -415,7 +408,7 @@ class ResumeViewer extends HandlebarsApplicationMixin(ApplicationV2) {
 
 /**
  * Résumé en grand sur tout l'écran : l'image tient dans l'écran, molette pour zoomer, glisser pour déplacer,
- * double-clic pour revenir, « Tourner la page » s'il y a un verso. Échap, clic sur le fond ou ✕ pour fermer.
+ * double-clic pour revenir, « Retourner » s'il y a un verso. Échap, clic sur le fond ou ✕ pour fermer.
  * @param {object} entry    Résumé (src, verso)
  * @param {number} page     Face affichée au départ (0 recto, 1 verso)
  * @param {boolean} fantasy Habillage fantasy
@@ -428,7 +421,7 @@ function openLightbox(entry, page, fantasy, onPage) {
   box.className = `rh-lightbox${fantasy ? " rh-fantasy" : ""}`;
   box.innerHTML = `<div class="rh-lb-scene"><img class="rh-lb-img" alt="" draggable="false"></div>
     <div class="rh-lb-bar">
-      ${entry.verso ? `<button type="button" class="rh-lb-flip"><i class="fa-solid fa-book-open"></i> ${t("Retourner")}</button><span class="rh-lb-page"></span>` : ""}
+      ${entry.verso ? `<button type="button" class="rh-lb-flip"><i class="fa-solid fa-rotate"></i> ${t("Retourner")}</button><span class="rh-lb-page"></span>` : ""}
       <span class="rh-lb-hint">${t("AideGrand")}</span>
       <button type="button" class="rh-lb-close" aria-label="${t("Fermer")}"><i class="fa-solid fa-xmark"></i></button>
     </div>`;
@@ -439,7 +432,7 @@ function openLightbox(entry, page, fantasy, onPage) {
   let scale = 1, tx = 0, ty = 0, drag = null, moved = false, busy = false;
   const apply = () => { img.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`; };
   const reset = () => { scale = 1; tx = 0; ty = 0; apply(); };
-  const show = () => { img.src = page ? entry.verso : entry.src; if (label) label.textContent = game.i18n.format("RESUME_HEBDO.Page", { n: page + 1 }); reset(); };
+  const show = () => { img.src = page ? entry.verso : entry.src; if (label) label.textContent = t(page ? "Verso" : "Recto"); reset(); };
   const close = () => { document.removeEventListener("keydown", onKey, true); box.remove(); onPage?.(page); };
   const onKey = (event) => { if (event.key === "Escape") { event.stopPropagation(); event.preventDefault(); close(); } };
   const flip = async () => {
@@ -447,14 +440,12 @@ function openLightbox(entry, page, fantasy, onPage) {
     busy = true;
     const turn = (deg) => `perspective(1800px) rotateY(${deg}deg)`;
     try {
-      scene.style.transformOrigin = page ? "right center" : "left center";
-      await scene.animate([{ transform: turn(0), filter: "brightness(1)" }, { transform: turn(page ? 90 : -90), filter: "brightness(.5)" }], { duration: 320, easing: "ease-in", fill: "forwards" }).finished;
+      await scene.animate([{ transform: turn(0) }, { transform: turn(90) }], { duration: 240, easing: "ease-in", fill: "forwards" }).finished;
       page = page ? 0 : 1;
       await new Promise((resolve) => { img.addEventListener("load", resolve, { once: true }); img.addEventListener("error", resolve, { once: true }); show(); });
       scene.getAnimations().forEach((a) => a.cancel());
-      scene.style.transformOrigin = page ? "right center" : "left center";
-      await scene.animate([{ transform: turn(page ? 90 : -90), filter: "brightness(.5)" }, { transform: turn(0), filter: "brightness(1)" }], { duration: 320, easing: "ease-out" }).finished;
-    } catch (err) { /* page interrompue */ } finally { busy = false; }
+      await scene.animate([{ transform: turn(-90) }, { transform: turn(0) }], { duration: 240, easing: "ease-out" }).finished;
+    } catch (err) { /* retournement interrompu */ } finally { busy = false; }
   };
   box.querySelector(".rh-lb-close").addEventListener("click", close);
   box.querySelector(".rh-lb-flip")?.addEventListener("click", flip);
@@ -548,7 +539,7 @@ Hooks.once("init", () => {
     scope: "client",
     config: true,
     type: Boolean,
-    default: true
+    default: false
   });
 });
 

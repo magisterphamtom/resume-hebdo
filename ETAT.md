@@ -31,3 +31,8 @@
 - Dans la fenêtre, la page se tourne par un clic sur l'image (choix de Stéphane), le bouton « Tourner la page » ou le coin corné.
 - Zoom calculé sur la feuille (en retrait du cadre dans l'habillage fantasy).
 - Vérifié : syntaxe ; aperçu statique de l'habillage. À tester dans Foundry : retournement, zoom après retournement, onglets avec et sans verso, réglage d'habillage.
+
+## v1.5.0 (25/11/2026)
+- **Retournement recto / verso identique à coc7-resume-epoques** (demande de Stéphane) : toute la feuille pivote sur son axe central (0 → 90°, changement d'image, −90° → 0, 220 ms ; 240 ms en grand), toujours dans le même sens, sans assombrissement. Bouton « Retourner » (icône de rotation) qui affiche la face visible « Recto » / « Verso ». Le coin corné et l'indicateur « Page 1 / 2 » sont retirés. Le repère « 2 pages » sur l'onglet est conservé.
+- Ouverture automatique désactivée par défaut (réglage client `autoOpen`).
+- À tester dans Foundry : retournement dans la fenêtre (habillage fantasy et classique) et en grand, zoom après retournement.

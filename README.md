@@ -6,11 +6,11 @@ Module Foundry VTT (v13/v14) qui affiche aux joueurs l'image du résumé de la d
 
 ## Fonctionnalités
 
-- **Ouverture automatique à la connexion** : le résumé s'affiche une fois par joueur et par nouveau résumé.
+- **Ouverture automatique à la connexion** (à activer par chaque joueur dans les réglages) : le résumé s'affiche une fois par joueur et par nouveau résumé.
 - **Bouton 📜 « Résumé de la semaine »** dans la barre d'outils de gauche : rouvre la fenêtre si elle a été fermée par inadvertance.
 - **Zoom à la molette** (centré sur le curseur), **déplacement en glissant**, **double-clic** pour ajuster à la fenêtre ; boutons + / − / ajuster. L'image tient toujours dans la fenêtre au départ, quelle que soit la taille d'écran, et la fenêtre est redimensionnable.
 - **Onglets par séance** (si `index.json` est présent) pour relire les résumés précédents.
-- **Résumé sur deux pages** : déposez `session-107-verso.webp` à côté de `session-107.webp` (ou indiquez `"verso"` dans `index.json`) ; un clic sur l'image, le bouton « Tourner la page » ou le coin corné la tourne comme une page de livre.
+- **Résumé sur deux pages** : déposez `session-107-verso.webp` à côté de `session-107.webp` (ou indiquez `"verso"` dans `index.json`) ; un clic sur l'image ou le bouton « Retourner » (qui indique Recto / Verso) retourne la feuille.
 - **Voir en grand** : le bouton « Voir en grand » ouvre le résumé par-dessus tout l'écran (molette pour zoomer, Échap pour fermer).
 - **Habillage fantasy** (grimoire de cuir, parchemin, onglets en marque-pages, sceau « Nouveau ») ou **classique** ; par défaut, fantasy pour D&D 5e, Pathfinder et les autres jeux médiévaux-fantastiques.
 - **Bouton MJ « Montrer à tous »** : affiche le résumé immédiatement chez les joueurs déjà connectés.
@@ -40,12 +40,12 @@ Chaque semaine : déposez la nouvelle image dans le dossier et ajoutez une ligne
 
 **Sans onglets** : sans `index.json`, le module affiche simplement `dernier-resume.webp` (ou `.png`, `.jpg`) et détecte tout seul quand il est remplacé.
 
-Dans les deux cas, le résumé le plus récent s'ouvre automatiquement à la connexion des joueurs. Pour ceux déjà connectés, cliquez sur **Montrer à tous** dans la fenêtre.
+Dans les deux cas, si le réglage est activé, le résumé le plus récent s'ouvre automatiquement à la connexion des joueurs. Pour ceux déjà connectés, cliquez sur **Montrer à tous** dans la fenêtre.
 
 ## Réglages
 
 - **Image du résumé (facultatif)** (MJ) : à renseigner seulement pour utiliser un autre fichier que celui par défaut.
-- **Ouvrir le résumé à la connexion** (chaque utilisateur) : activé par défaut.
+- **Ouvrir le résumé à la connexion** (chaque utilisateur) : désactivé par défaut.
 
 ## Licence
 
